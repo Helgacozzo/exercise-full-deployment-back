@@ -5,8 +5,9 @@ import dotenv from "dotenv";
 dotenv.config();
 const { MONGODB_URI } =process.env;
 import mongoose from "mongoose";
-import Album from "./models/albumModel.js";
-import Musician from "./models/musicianModel.js";
+import musicianRouter from "./routes/"
+// import Album from "./models/albumModel.js";
+// import Musician from "./models/musicianModel.js";
 const PORT = process.env.PORT || 3000;
 
 const app = express();
@@ -16,7 +17,7 @@ app.use(cors({origin: '*'}));
 app(express.json());
 
 app.use('/albums', albumsRouter);
-app.use('/musicians', musiciansRouter);
+// app.use('/musicians', musiciansRouter);
 
 mongoose.connect(MONGODB_URI)
 .then( () => {

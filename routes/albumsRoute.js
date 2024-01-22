@@ -1,4 +1,4 @@
-import Album from "../models/albumModel";
+import Album from "../models/albumModel.js";
 import express from "express";
 const router = express.Router();
 

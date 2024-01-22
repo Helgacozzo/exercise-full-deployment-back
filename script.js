@@ -3,7 +3,7 @@ dotenv.config();
 const { MONGODB_URI } = process.env;
 import mongoose from "mongoose";
 // import Album from "./models/albumModel.js";
-import Musician from "./models/musicianModel.js"
+// import Musician from "./models/musicianModel.js"
 
 const run = async () => {
 
@@ -16,15 +16,15 @@ const run = async () => {
         //     duration_seconds: 320
         // })
 
-        const doc = new Musician({
-            first_name: 'Gigi',
-            last_name: 'Gigetto',
-            art_Name: 'Gigione',
-            birth_date: '11/02/1987'
-        })
+        // const doc = new Musician({
+        //     first_name: 'Gigi',
+        //     last_name: 'Gigetto',
+        //     art_Name: 'Gigione',
+        //     birth_date: '11/02/1987'
+        // })
 
-        await doc.save();
-        console.log(doc);
+        // await doc.save();
+        // console.log(doc);
         
     } catch (error) {
 

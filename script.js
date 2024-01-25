@@ -25,7 +25,7 @@ const run = async () => {
 
         // await doc.save();
         // console.log(doc);
-        
+
     } catch (error) {
 
         console.log(error.message)

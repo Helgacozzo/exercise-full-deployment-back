@@ -3,30 +3,28 @@ import morgan from "morgan";
 import cors from "cors";
 import dotenv from "dotenv";
 dotenv.config();
-const { MONGODB_URI } =process.env;
+const { MONGODB_URI } = process.env;
 import mongoose from "mongoose";
-import musicianRouter from "./routes/"
-// import Album from "./models/albumModel.js";
-// import Musician from "./models/musicianModel.js";
-const PORT = process.env.PORT || 3000;
+import musicians from "./routes/musicians.js"
+import albums from "./models/albums.js";
 
 const app = express();
 
 app.use(morgan('dev'));
-app.use(cors({origin: '*'}));
+app.use(cors({ origin: '*' }));
 app(express.json());
 
-app.use('/albums', albumsRouter);
-// app.use('/musicians', musiciansRouter);
+app.use('/albums', albums);
+app.use('/musicians', musicians);
 
 mongoose.connect(MONGODB_URI)
-.then( () => {
-    console.log("Connesssione a Mongo DB effettuata con successo.");
-    app.listen(PORT, () => {
-        console.log(`Server ON e in ascolto su porta ${PORT}.`)
+    .then(() => {
+        console.log("Connesssione a Mongo DB effettuata con successo.");
+        app.listen(EXPRESS_PORT, () => {
+            console.log(`Server ON e in ascolto su porta ${EXPRESS_PORT}.`)
+        })
     })
-})
-.catch(err => console.error(err));
+    .catch(err => console.error(`Errore connessione a MongoDB`, err));
 
 export default app;
 

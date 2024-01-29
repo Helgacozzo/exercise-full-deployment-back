@@ -1,6 +1,5 @@
 import express from "express";
 import Album from "../models/Album.js";
-import Musician from "../models/Musician.js";
 
 const router = express.Router();
 
@@ -12,7 +11,7 @@ router.post('/', async (req, res) => {
     }
 
     try {
-        const { _id } = await Album.create(req.body);
+        const { _id} = await Album.create(req.body);
         const album = await Album.findById(_id).select("-_id -__v");
         return res.send(album);
     } catch (error) {
@@ -26,7 +25,12 @@ router.post('/', async (req, res) => {
 router.get('/', async (req, res) => {
 
     try {
-        const albums = await Album.find().select("-__v");
+        const albums = await Album.find()
+        .select("-__v")
+        .populate({
+            path: "musician",
+            select: "first_name last_name art_name -id -__v"
+        })
         return res.send(albums);
     } catch (error) {
         console.error(error.message);
@@ -41,7 +45,9 @@ router.get('/:slug', async (req, res) => {
     const { slug } = req.params;
 
     try {
-        const album = await Album.findBySlug(slug).select("-slug \-__v");
+        const album = await Album.findBySlug(slug)
+        .select("-_id /-__v")
+        .populate("musician")
         if (!album) {
             throw new Error(`Album of slug '${slug}' not found.`);
         }
@@ -98,7 +104,5 @@ router.delete('/:slug', async (req, res) => {
     }
 
 });
-
-
 
 export default router;

@@ -10,8 +10,8 @@ router.post('/', async (req, res) => {
     }
 
     try {
-        const { _id } = await Musician.create(req.body);
-        const musician = await Musician.findById(_id).select("-__v");
+        const { _slug } = await Musician.create(req.body);
+        const musician = await Musician.findBySlug(_slug).select("-__v");
         return res.send(musician);
     } catch (error) {
         console.error(error.message);
@@ -34,14 +34,14 @@ router.get('/', async (req, res) => {
 });
 
 //GET single musician info
-router.get('/:id', async (req, res) => {
+router.get('/:slug', async (req, res) => {
 
-    const { id } = req.params;
+    const { slug } = req.params;
 
     try {
-        const musician = await Musician.findById(id).select("-_id -__v");
+        const musician = await Musician.findBySlug(slug).select("-_id -__v");
         if (!musician) {
-            throw new Error(`Musician of id '${id}' not found.`);
+            throw new Error(`Musician of slug '${slug}' not found.`);
         }
         return res.send(musician);
     } catch (error) {
@@ -52,19 +52,19 @@ router.get('/:id', async (req, res) => {
 });
 
 //PATCH single musician update
-router.patch('/:id', async (req, res) => {
+router.patch('/:slug', async (req, res) => {
 
     if (!req.body || !Object.keys(req.body).length) {
         return res.status(400).send('You must pass a body with at least one property.');
     }
 
-    const { id } = req.params;
+    const { slug } = req.params;
     const newProperties = Object.entries(req.body);
 
     try {
-        const musician = await Musician.findById(id);
+        const musician = await Musician.findByslug(slug);
         if (!musician) {
-            return res.status(404).send(`Musician of id '${id}' not found.`);
+            return res.status(404).send(`Musician of slug '${slug}' not found.`);
         }
         newProperties.forEach(([key, value]) => {
             musician[key] = value;
@@ -92,16 +92,16 @@ router.delete('/', async (req, res) => {
 });
 
 //DELETE single musician delete
-router.delete('/:id', async (req, res) => {
+router.delete('/:slug', async (req, res) => {
 
-    const { id } = req.params;
+    const { slug } = req.params;
 
     try {
-        const musician = await Musician.findById(id);
+        const musician = await Musician.findBySlug(slug);
         await musician.removeFromAlbums();
 
-        await Musician.findByIdAndDelete(id);
-        return res.send(`Musician with id ${id} was successfully deleted.`);
+        await Musician.findByslugAndDelete(musician._id);
+        return res.send(`Musician with slug ${slug} was successfully deleted.`);
     } catch (error) {
         console.error(error.message);
         return res.status(404).send(error.message);

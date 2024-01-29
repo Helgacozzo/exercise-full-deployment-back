@@ -87,6 +87,11 @@ schema.methods.createSlug = async function () {
     this.slug = slug_name.replaceAll(" ", "-").toLowerCase();
 }
 
+//static per trovare un musician dallo slug
+schema.statics.findBySlug = function (slug) {
+    return this.findOne({ slug })
+}
+
 schema.methods.removeAlbum = async function (albumId) {
     const Musician = this.constructor;
     const albumsIds = this.albums.map(a => a._id.toString());
